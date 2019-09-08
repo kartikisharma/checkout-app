@@ -1,8 +1,9 @@
 package kartiki.checkoutapp
 
-import android.support.v7.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -26,6 +27,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         button.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
+                startActivity(Intent(this@MainActivity,
+                    LiveBarcodeScanningActivity::class.java))
 // GET
 //                val call = service.postItem(true, 2)
 //                call.enqueue(object : Callback<ResponseBody> {
@@ -49,39 +52,42 @@ class MainActivity : AppCompatActivity() {
 //                    }
 //                })
 //            }
-
-//            GET
-                button.setOnClickListener(object : View.OnClickListener {
-                    override fun onClick(v: View?) {
-                        loadingSpinner.visibility = View.VISIBLE
-                        val call = service.getItems()
-                        call.enqueue(object : Callback<List<Item>> {
-                            override fun onResponse(
-                                call: Call<List<Item>>,
-                                response: Response<List<Item>>
-                            ) {
-                                try {
-                                    val body = response.body()
-                                    if (body != null && body.isNotEmpty()) {
-                                        textView.text = body[0].id.toString()
-                                    }
-                                    loadingSpinner.visibility = View.GONE
-                                } catch (e: IOException) {
-                                    e.printStackTrace()
-                                    textView.text = e.message
-                                }
-
-                            }
-
-                            override fun onFailure(call: Call<List<Item>>, t: Throwable) {
-                                t.printStackTrace()
-                                textView.text = t.message
-                            }
-                        })
-                    }
-                })
             }
         })
     }
+
+//            GET
+//                button.setOnClickListener(object : View.OnClickListener {
+//                    override fun onClick(v: View?) {
+//                        loadingSpinner.visibility = View.VISIBLE
+//                        val call = service.getItems()
+//                        call.enqueue(object : Callback<List<Item>> {
+//                            override fun onResponse(
+//                                call: Call<List<Item>>,
+//                                response: Response<List<Item>>
+//                            ) {
+//                                try {
+//                                    val body = response.body()
+//                                    if (body != null && body.isNotEmpty()) {
+//                                        textView.text = body[0].id.toString()
+//                                    }
+//                                    loadingSpinner.visibility = View.GONE
+//                                } catch (e: IOException) {
+//                                    e.printStackTrace()
+//                                    textView.text = e.message
+//                                }
+//
+//                            }
+//
+//                            override fun onFailure(call: Call<List<Item>>, t: Throwable) {
+//                                t.printStackTrace()
+//                                textView.text = t.message
+//                            }
+//                        })
+//                    }
+//                })
+//            }
+//        })
+//    }
 }
 
