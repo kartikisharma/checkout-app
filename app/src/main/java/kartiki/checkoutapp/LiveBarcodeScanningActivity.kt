@@ -51,7 +51,7 @@ class LiveBarcodeScanningActivity : AppCompatActivity(), OnClickListener {
     private var graphicOverlay: GraphicOverlay? = null
 //    private var settingsButton: View? = null
 //    private var flashButton: View? = null
-//    private var promptChip: Chip? = null
+    private var promptChip: Chip? = null
     private var promptChipAnimator: AnimatorSet? = null
     private var workflowModel: WorkflowModel? = null
     private var currentWorkflowState: WorkflowModel.WorkflowState? = null
@@ -66,13 +66,11 @@ class LiveBarcodeScanningActivity : AppCompatActivity(), OnClickListener {
             cameraSource = CameraSource(this)
         }
 
-
-
-//        promptChip = findViewById(R.id.bottom_prompt_chip)
-//        promptChipAnimator =
-//            (AnimatorInflater.loadAnimator(this, R.animator.bottom_prompt_chip_enter) as AnimatorSet).apply {
-//                setTarget(promptChip)
-//            }
+        promptChip = findViewById(R.id.bottom_prompt_chip)
+        promptChipAnimator =
+            (AnimatorInflater.loadAnimator(this, R.animator.bottom_prompt_chip_enter) as AnimatorSet).apply {
+                setTarget(promptChip)
+            }
 
 //        findViewById<View>(R.id.close_button).setOnClickListener(this)
 //        flashButton = findViewById<View>(R.id.flash_button).apply {
@@ -177,42 +175,45 @@ class LiveBarcodeScanningActivity : AppCompatActivity(), OnClickListener {
             currentWorkflowState = workflowState
             Log.d(TAG, "Current workflow state: ${currentWorkflowState!!.name}")
 
-//            val wasPromptChipGone = promptChip?.visibility == View.GONE
+            val wasPromptChipGone = promptChip?.visibility == View.GONE
 
             when (workflowState) {
                 WorkflowState.DETECTING -> {
-//                    promptChip?.visibility = View.VISIBLE
-//                    promptChip?.setText(R.string.prompt_point_at_a_barcode)
+                    promptChip?.visibility = View.VISIBLE
+                    promptChip?.setText(R.string.prompt_point_at_a_barcode)
                     startCameraPreview()
                 }
                 WorkflowState.CONFIRMING -> {
-//                    promptChip?.visibility = View.VISIBLE
-//                    promptChip?.setText(R.string.prompt_move_camera_closer)
+                    promptChip?.visibility = View.VISIBLE
+                    promptChip?.setText(R.string.prompt_move_camera_closer)
                     startCameraPreview()
                 }
                 WorkflowState.SEARCHING -> {
-//                    promptChip?.visibility = View.VISIBLE
-//                    promptChip?.setText(R.string.prompt_searching)
+                    promptChip?.visibility = View.VISIBLE
+                    promptChip?.setText(R.string.prompt_searching)
                     stopCameraPreview()
                 }
                 WorkflowState.DETECTED, WorkflowState.SEARCHED -> {
-//                    promptChip?.visibility = View.GONE
+                    promptChip?.visibility = View.GONE
                     stopCameraPreview()
                 }
-//                else ->
-//                    promptChip?.visibility = View.GONE
+                else ->
+                    promptChip?.visibility = View.GONE
             }
 
-//            val shouldPlayPromptChipEnteringAnimation = wasPromptChipGone && promptChip?.visibility == View.VISIBLE
-//            promptChipAnimator?.let {
-//                if (shouldPlayPromptChipEnteringAnimation && !it.isRunning) it.start()
-//            }
+            val shouldPlayPromptChipEnteringAnimation = wasPromptChipGone && promptChip?.visibility == View.VISIBLE
+            promptChipAnimator?.let {
+                if (shouldPlayPromptChipEnteringAnimation && !it.isRunning) it.start()
+            }
         })
 
         workflowModel?.detectedBarcode?.observe(this, Observer { barcode ->
             if (barcode != null) {
                 val barcodeFieldList = ArrayList<BarcodeField>()
-//                barcodeFieldList.add(BarcodeField("Raw Value", barcode.rawValue ?: ""))
+                barcodeFieldList.add(BarcodeField("Raw Value", barcode.rawValue ?: ""))
+                //TODO lookup in the local database for whether it exists,
+                // TODO if not -> redirect to add item to system with barcode filled in
+                // TODO else -> make a patch request with the item's id
 //                BarcodeResultFragment.show(supportFragmentManager, barcodeFieldList)
             }
         })

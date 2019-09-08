@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="horizontal"
+        android:padding="@dimen/medium_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <TextView android:id="@+id/itemName"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              tools:text="Samsung Galaxy S6"
+              android:textSize="@dimen/view_holder_text_size"
+              android:maxLines="2"
+              android:ellipsize="end"
+              app:layout_constrainedWidth="true"
+              app:layout_constraintTop_toTopOf="parent"
+              app:layout_constraintStart_toStartOf="parent"
+              app:layout_constraintBottom_toBottomOf="parent"
+              app:layout_constraintEnd_toStartOf="@+id/imageView"
+              app:layout_constraintHorizontal_bias="0"
+              android:layout_marginEnd="@dimen/large_margin"/>
+
+    <ImageView android:layout_width="@dimen/small_margin"
+               android:layout_height="@dimen/small_margin"
+               android:src="@drawable/ic_green_dot"
+               android:id="@+id/imageView"
+               app:layout_constraintEnd_toStartOf="@+id/availabilityStatus"
+               android:layout_marginEnd="@dimen/xsmall_margin"
+               app:layout_constraintTop_toTopOf="@+id/availabilityStatus"
+               app:layout_constraintBottom_toBottomOf="@+id/availabilityStatus"/>
+
+    <TextView android:id="@+id/availabilityStatus"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              tools:text="available"
+              android:textSize="@dimen/view_holder_text_size"
+              app:layout_constraintEnd_toEndOf="parent"
+              app:layout_constraintTop_toTopOf="parent"
+              app:layout_constraintBottom_toBottomOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
