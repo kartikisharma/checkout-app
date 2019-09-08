@@ -30,5 +30,7 @@ gets the job done and follows the ideal practices.
 ### TBD/Nice to have
 - [ ] use Room for database
 - [ ] use MVVM & Dagger/Toothpick
+- [ ] expand on the rails app; make a page that allows you to view and edit inventory (add/delete items)
+- [ ] add image to item resource
 
 ## GIFs & screenshots
