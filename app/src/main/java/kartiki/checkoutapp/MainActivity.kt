@@ -2,6 +2,8 @@ package kartiki.checkoutapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -25,11 +27,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        //TODO remove the button, replace with list populated by a getItems call
         button.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                startActivity(Intent(this@MainActivity,
-                    LiveBarcodeScanningActivity::class.java))
-// GET
+
+// PUT
 //                val call = service.postItem(true, 2)
 //                call.enqueue(object : Callback<ResponseBody> {
 //                    override fun onResponse(
@@ -89,5 +91,21 @@ class MainActivity : AppCompatActivity() {
 //            }
 //        })
 //    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            R.id.barcode_scanner -> {
+                startActivity(Intent(this@MainActivity,
+                    LiveBarcodeScanningActivity::class.java))
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
 }
 
