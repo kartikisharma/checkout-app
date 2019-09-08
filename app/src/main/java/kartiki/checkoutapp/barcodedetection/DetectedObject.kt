@@ -1,4 +1,4 @@
-package kartiki.checkoutapp
+package kartiki.checkoutapp.barcodedetection
 
 /*
  * Copyright 2019 Google LLC
@@ -68,7 +68,8 @@ class DetectedObject(
             )
             if (createdBitmap.width > MAX_IMAGE_WIDTH) {
                 val dstHeight = (MAX_IMAGE_WIDTH.toFloat() / createdBitmap.width * createdBitmap.height).toInt()
-                bitmap = Bitmap.createScaledBitmap(createdBitmap, MAX_IMAGE_WIDTH, dstHeight, /* filter= */ false)
+                bitmap = Bitmap.createScaledBitmap(createdBitmap,
+                    MAX_IMAGE_WIDTH, dstHeight, /* filter= */ false)
             }
             createdBitmap
         }

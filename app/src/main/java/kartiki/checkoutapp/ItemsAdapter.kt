@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import kartiki.checkoutapp.network.Item
 import kotlinx.android.synthetic.main.viewholder_item.view.*
 
 class ItemsAdapter(private val items: List<Item>) : RecyclerView.Adapter<ItemsAdapter.ItemViewHolder>() {

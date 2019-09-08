@@ -22,10 +22,10 @@ import androidx.annotation.MainThread
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode
-import kartiki.checkoutapp.DetectedObject
+import kartiki.checkoutapp.barcodedetection.DetectedObject
 import kartiki.checkoutapp.PreferenceUtils
 import kartiki.checkoutapp.Product
-import kartiki.checkoutapp.SearchedObject
+import kartiki.checkoutapp.barcodedetection.SearchedObject
 import java.util.HashSet
 
 /** View model for handling application workflow based on camera preview.  */
@@ -123,6 +123,7 @@ class WorkflowModel(application: Application) : AndroidViewModel(application) {
         objectIdsToSearch.remove(detectedObject.objectId)
         setWorkflowState(WorkflowState.SEARCHED)
 
-        searchedObject.value = SearchedObject(context.resources, lConfirmedObject, products)
+        searchedObject.value =
+            SearchedObject(context.resources, lConfirmedObject, products)
     }
 }

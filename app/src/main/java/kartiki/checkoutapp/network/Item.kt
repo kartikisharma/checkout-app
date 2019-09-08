@@ -1,4 +1,4 @@
-package kartiki.checkoutapp
+package kartiki.checkoutapp.network
 
 import com.google.gson.annotations.SerializedName
 

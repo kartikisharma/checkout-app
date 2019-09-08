@@ -1,4 +1,4 @@
-package kartiki.checkoutapp
+package kartiki.checkoutapp.barcodedetection
 
 /*
  * Copyright 2019 Google LLC
@@ -19,6 +19,9 @@ package kartiki.checkoutapp
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Rect
+import kartiki.checkoutapp.Product
+import kartiki.checkoutapp.R
+import kartiki.checkoutapp.Utils
 
 /** Hosts the detected object info and its search result.  */
 class SearchedObject(resources: Resources, private val detectedObject: DetectedObject, val productList: List<Product>) {
