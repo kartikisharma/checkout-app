@@ -18,25 +18,35 @@
               app:layout_constraintTop_toTopOf="parent"
               app:layout_constraintStart_toStartOf="parent"
               app:layout_constraintBottom_toBottomOf="parent"
-              app:layout_constraintEnd_toStartOf="@+id/imageView"
+              app:layout_constraintEnd_toStartOf="@+id/guideline"
               app:layout_constraintHorizontal_bias="0"
               android:layout_marginEnd="@dimen/large_margin"/>
+
+    <androidx.constraintlayout.widget.Guideline
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/guideline"
+            app:layout_constraintGuide_percent="0.7"
+            android:orientation="vertical"/>
 
     <ImageView android:layout_width="@dimen/small_margin"
                android:layout_height="@dimen/small_margin"
                android:src="@drawable/ic_green_dot"
                android:id="@+id/imageView"
-               app:layout_constraintEnd_toStartOf="@+id/availabilityStatus"
-               android:layout_marginEnd="@dimen/xsmall_margin"
+               android:layout_marginStart="@dimen/xsmall_margin"
                app:layout_constraintTop_toTopOf="@+id/availabilityStatus"
-               app:layout_constraintBottom_toBottomOf="@+id/availabilityStatus"/>
+               app:layout_constraintBottom_toBottomOf="@+id/availabilityStatus"
+               app:layout_constraintStart_toStartOf="@+id/guideline"/>
 
     <TextView android:id="@+id/availabilityStatus"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              tools:text="available"
+              tools:text="unavailable"
               android:textSize="@dimen/view_holder_text_size"
               app:layout_constraintEnd_toEndOf="parent"
               app:layout_constraintTop_toTopOf="parent"
-              app:layout_constraintBottom_toBottomOf="parent"/>
+              app:layout_constraintBottom_toBottomOf="parent"
+              app:layout_constraintStart_toEndOf="@+id/imageView"
+              app:layout_constraintHorizontal_bias="0"
+              android:layout_marginStart="@dimen/xsmall_margin"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
