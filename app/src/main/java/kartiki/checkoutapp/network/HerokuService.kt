@@ -12,8 +12,13 @@ interface HerokuService {
 
     @Multipart
     @PUT("items/{id}/")
-    fun postItem(
+    fun modifyItemsAvailability(
         @Part("available") available: Boolean,
         @Path("id") itemId: Int
-    ) : Call<ResponseBody>
+    ) : Deferred<Response<Item>>
+
+    @POST
+    fun addItem(
+        @Body item: Item
+    ) : Call<Item>
 }

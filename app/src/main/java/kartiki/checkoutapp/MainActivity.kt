@@ -59,7 +59,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun fetchItems() {
-        //TODO show spinner when loading
         loadingSpinner.visibility = View.VISIBLE
 
         GlobalScope.launch(Dispatchers.Main) {
@@ -89,7 +88,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     // PUT
-//                val call = service.postItem(true, 2)
+//                val call = service.modifyItemsAvailability(true, 2)
 //                call.enqueue(object : Callback<ResponseBody> {
 //                    override fun onResponse(
 //                        call: Call<ResponseBody>,
