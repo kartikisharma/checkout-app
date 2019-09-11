@@ -19,9 +19,7 @@ package kartiki.checkoutapp
 import android.Manifest
 import android.animation.AnimatorInflater
 import android.animation.AnimatorSet
-import android.content.Intent
 import android.content.pm.PackageManager
-import android.hardware.Camera
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -33,6 +31,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.common.internal.Objects
 import com.google.android.material.chip.Chip
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kartiki.checkoutapp.barcodedetection.BarcodeField
 import kartiki.checkoutapp.barcodedetection.BarcodeProcessor
 import kartiki.checkoutapp.camera.CameraSource
@@ -40,16 +39,34 @@ import kartiki.checkoutapp.camera.CameraSourcePreview
 import kartiki.checkoutapp.camera.GraphicOverlay
 import kartiki.checkoutapp.camera.WorkflowModel
 import kartiki.checkoutapp.camera.WorkflowModel.WorkflowState
+import kartiki.checkoutapp.network.HerokuService
+import kartiki.checkoutapp.network.Item
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 import java.util.ArrayList
+import com.google.android.material.snackbar.Snackbar
+
 
 /** Demonstrates the barcode scanning workflow using camera preview.  */
 class LiveBarcodeScanningActivity : AppCompatActivity(), OnClickListener {
 
+    private val retrofit = Retrofit.Builder()
+        .baseUrl("https://shielded-refuge-24263.herokuapp.com/")
+        .addConverterFactory(GsonConverterFactory.create())
+        .addCallAdapterFactory(CoroutineCallAdapterFactory())
+        .build()
+
+    private val service = retrofit.create(HerokuService::class.java)
+
     private var cameraSource: CameraSource? = null
     private var preview: CameraSourcePreview? = null
     private var graphicOverlay: GraphicOverlay? = null
-//    private var settingsButton: View? = null
+    //    private var settingsButton: View? = null
 //    private var flashButton: View? = null
     private var promptChip: Chip? = null
     private var promptChipAnimator: AnimatorSet? = null
@@ -208,18 +225,54 @@ class LiveBarcodeScanningActivity : AppCompatActivity(), OnClickListener {
         })
 
         workflowModel?.detectedBarcode?.observe(this, Observer { barcode ->
-            if (barcode != null) {
-                val barcodeFieldList = ArrayList<BarcodeField>()
-                barcodeFieldList.add(BarcodeField("Raw Value", barcode.rawValue ?: ""))
+            if (barcode != null && !barcode.rawValue.isNullOrEmpty()) {
                 //TODO lookup in the local database for whether it exists,
-                // TODO if not -> redirect to add item to system with barcode filled in
-                // TODO else -> make a patch request with the item's id
-//                BarcodeResultFragment.show(supportFragmentManager, barcodeFieldList)
+
+                GlobalScope.launch(Dispatchers.Main) {
+                    val getItemRequest = service.getItemWithBarcode(barcode.rawValue!!)
+                    try {
+                        val response = getItemRequest.await()
+                        val item = response.body()
+                        onGetItemResponse(response, item)
+                    } catch (e: Exception) {
+                        onFailure(e)
+                    }
+                }
             }
         })
     }
 
+    private fun onFailure(e: Exception) {
+        if (e is IOException) {
+            Snackbar
+                .make(findViewById(R.id.container), INTERNET_UNAVAILABLE, Snackbar.LENGTH_LONG)
+                .show()
+        } else {
+            Snackbar
+                .make(findViewById(R.id.container), CONVERSION_ISSUE, Snackbar.LENGTH_SHORT)
+                .show()
+        }
+    }
+
+    private suspend fun onGetItemResponse(
+        response: Response<Item>,
+        item: Item?
+    ) {
+        if (response.isSuccessful && item != null) {
+            try {
+                service.modifyItemsAvailability(!item.available, item.barcode).await()
+            } catch (e: Exception) {
+                onFailure(e)
+            }
+        } else {
+            // TODO if not -> redirect to add item to system with barcode filled in
+        }
+    }
+
+
     companion object {
         private const val TAG = "LiveBarcodeActivity"
+        private const val INTERNET_UNAVAILABLE = "Internet Unavailable"
+        private const val CONVERSION_ISSUE = "conversion issue! big problems :("
     }
 }
