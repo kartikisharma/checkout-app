@@ -24,6 +24,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.View.OnClickListener
+import androidx.annotation.MainThread
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -48,8 +49,10 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
-import java.util.ArrayList
 import com.google.android.material.snackbar.Snackbar
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
 
 
 /** Demonstrates the barcode scanning workflow using camera preview.  */
@@ -254,16 +257,24 @@ class LiveBarcodeScanningActivity : AppCompatActivity(), OnClickListener {
         }
     }
 
-    private suspend fun onGetItemResponse(
+    private fun onGetItemResponse(
         response: Response<Item>,
         item: Item?
     ) {
         if (response.isSuccessful && item != null) {
-            try {
-                service.modifyItemsAvailability(!item.available, item.barcode).await()
-            } catch (e: Exception) {
-                onFailure(e)
-            }
+            service.modifyItemsAvailability(!item.available, item.barcode).enqueue(
+                object : Callback<ResponseBody> {
+                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                        onFailure(IOException())
+                    }
+
+                    override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                        if (!response.isSuccessful) {
+                            onFailure(IOException())
+                        }
+                    }
+                }
+            )
         } else {
             // TODO if not -> redirect to add item to system with barcode filled in
         }

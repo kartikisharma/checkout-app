@@ -21,7 +21,7 @@ interface HerokuService {
     fun modifyItemsAvailability(
         @Part("available") available: Boolean,
         @Path("barcode") barcode: String
-    ) : Deferred<Response<Void>>
+    ) : Call<ResponseBody>
 
     @POST
     fun addItem(
