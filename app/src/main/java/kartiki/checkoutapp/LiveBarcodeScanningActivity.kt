@@ -24,7 +24,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.View.OnClickListener
-import androidx.annotation.MainThread
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -33,7 +32,6 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.common.internal.Objects
 import com.google.android.material.chip.Chip
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import kartiki.checkoutapp.barcodedetection.BarcodeField
 import kartiki.checkoutapp.barcodedetection.BarcodeProcessor
 import kartiki.checkoutapp.camera.CameraSource
 import kartiki.checkoutapp.camera.CameraSourcePreview
@@ -237,6 +235,7 @@ class LiveBarcodeScanningActivity : AppCompatActivity(), OnClickListener {
                         val response = getItemRequest.await()
                         val item = response.body()
                         onGetItemResponse(response, item)
+                        startCameraPreview()
                     } catch (e: Exception) {
                         onFailure(e)
                     }
@@ -252,7 +251,7 @@ class LiveBarcodeScanningActivity : AppCompatActivity(), OnClickListener {
                 .show()
         } else {
             Snackbar
-                .make(findViewById(R.id.container), CONVERSION_ISSUE, Snackbar.LENGTH_SHORT)
+                .make(findViewById(R.id.container), CONVERSION_ISSUE, Snackbar.LENGTH_LONG)
                 .show()
         }
     }
@@ -262,28 +261,40 @@ class LiveBarcodeScanningActivity : AppCompatActivity(), OnClickListener {
         item: Item?
     ) {
         if (response.isSuccessful && item != null) {
-            service.modifyItemsAvailability(!item.available, item.barcode).enqueue(
-                object : Callback<ResponseBody> {
-                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                        onFailure(IOException())
-                    }
-
-                    override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                        if (!response.isSuccessful) {
-                            onFailure(IOException())
-                        }
-                    }
-                }
-            )
+            modifyItemAvailability(item)
         } else {
             // TODO if not -> redirect to add item to system with barcode filled in
+            Snackbar
+                .make(findViewById(R.id.container), BARCODE_MATCH_FAILURE, Snackbar.LENGTH_LONG)
+                .show()
         }
     }
 
+    private fun modifyItemAvailability(item: Item) {
+        service.modifyItemsAvailability(!item.available, item.barcode).enqueue(
+            object : Callback<ResponseBody> {
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    onFailure(IOException())
+                }
+
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    if (!response.isSuccessful) {
+                        onFailure(IOException())
+                    } else {
+                        val status : String  = if (!item.available) "checked in" else "checked out"
+                        val text = ITEM_STATUS.format(item.name, status)
+                        Snackbar.make(findViewById(R.id.container), text, Snackbar.LENGTH_LONG).show()
+                    }
+                }
+            }
+        )
+    }
 
     companion object {
         private const val TAG = "LiveBarcodeActivity"
-        private const val INTERNET_UNAVAILABLE = "Internet Unavailable"
+        private const val INTERNET_UNAVAILABLE = "Internet unavailable"
         private const val CONVERSION_ISSUE = "conversion issue! big problems :("
+        private const val BARCODE_MATCH_FAILURE = "Sorry, no item with this barcode was found!"
+        private const val ITEM_STATUS = "Item, %s, was %s successfully"
     }
 }

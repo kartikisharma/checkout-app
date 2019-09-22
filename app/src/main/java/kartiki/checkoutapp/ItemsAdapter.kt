@@ -9,7 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import kartiki.checkoutapp.network.Item
 import kotlinx.android.synthetic.main.viewholder_item.view.*
 
-class ItemsAdapter(private val items: List<Item>) : RecyclerView.Adapter<ItemsAdapter.ItemViewHolder>() {
+class ItemsAdapter : RecyclerView.Adapter<ItemsAdapter.ItemViewHolder>() {
+    private lateinit var mItems : List<Item>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         return ItemViewHolder(
@@ -19,11 +20,11 @@ class ItemsAdapter(private val items: List<Item>) : RecyclerView.Adapter<ItemsAd
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        holder.bind(items[position])
+        holder.bind(mItems[position])
     }
 
     override fun getItemCount(): Int {
-        return items.size
+        return mItems.size
     }
 
     class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -49,5 +50,10 @@ class ItemsAdapter(private val items: List<Item>) : RecyclerView.Adapter<ItemsAd
                 ContextCompat.getColor(itemView.context, id),
                 android.graphics.PorterDuff.Mode.SRC_IN)
         }
+    }
+
+    fun setItems(items: List<Item>) {
+        mItems = items
+        notifyDataSetChanged()
     }
 }
