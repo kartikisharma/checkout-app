@@ -39,4 +39,4 @@ gets the job done and follows the ideal practices.
 
 | Demo | List of items screen | Barcode scan screen |
 | ------------- | ------------- | ------------- |
-| <img src="demo.gif" width="400" height="500"> | <img src="itemslist.png" width="400" height="500"> | <img src="barcodescanningscreen.png" width="400" height="500"> |
+| <img src="newdemo.gif" width="400" height="500"> | <img src="itemslist.png" width="400" height="500"> | <img src="barcodescanningscreen.png" width="400" height="500"> |
