@@ -34,3 +34,9 @@ gets the job done and follows the ideal practices.
 - [ ] add image to item resource
 
 ## GIFs & screenshots
+
+
+
+| Demo | Barcode scan screen | List of items screen |
+| ------------- | ------------- | ------------- |
+| <img src="demo.gif" width="400" height="500"> | <img src="Screenshot_20190922-144016.png" width="400" height="500"> | <img src="Screenshot_20190922-143956.png" width="400" height="500"> |
