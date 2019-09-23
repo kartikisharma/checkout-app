@@ -1,10 +1,9 @@
 # Checkout Android [UNDER DEVELOPMENT]
 
-This is an android app that allows you to manage an inventory of items that can be checked in/out.
+This is an android app that allows you to manage an inventory of items.
 
 ## What does this app do?
 Users can automatically check in and out items by scanning its barcode. 
-They can also add new items to the inventory by scanning its barcode and logging its other information.
 
 ## Technologies & libraries used:
 
@@ -28,14 +27,14 @@ gets the job done and follows the ideal practices.
 </ul>
 
 ### TBD/Nice to have
+- [ ] add the name of the user when item is being signed out; update API and db
+- [ ] add the ability to add new items to the inventory by scanning its barcode
 - [ ] use Room for database
 - [ ] use MVVM & Dagger/Toothpick
 - [ ] expand on the rails app; make a page that allows you to view and edit inventory (add/delete items)
 - [ ] add image to item resource
 
 ## GIFs & screenshots
-
-
 
 | Demo | List of items screen | Barcode scan screen |
 | ------------- | ------------- | ------------- |
