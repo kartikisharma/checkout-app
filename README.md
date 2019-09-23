@@ -37,6 +37,6 @@ gets the job done and follows the ideal practices.
 
 
 
-| Demo | Barcode scan screen | List of items screen |
+| Demo | List of items screen | Barcode scan screen |
 | ------------- | ------------- | ------------- |
-| <img src="demo.gif" width="400" height="500"> | <img src="Screenshot_20190922-144016.png" width="400" height="500"> | <img src="Screenshot_20190922-143956.png" width="400" height="500"> |
+| <img src="demo.gif" width="400" height="500"> | <img src="itemslist.png" width="400" height="500"> | <img src="barcodescanningscreen.png" width="400" height="500"> |
