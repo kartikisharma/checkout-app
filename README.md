@@ -3,7 +3,13 @@
 This is an android app that allows you to manage an inventory of items.
 
 ## What does this app do?
-Users can automatically check in and out items by scanning its barcode. 
+Users can automatically check in and out items by scanning its barcode.
+
+## Use case
+I have worked in various companies where there has been difficulty tracking testing devices used across
+different mobile teams. By assigning a unique barcode to each device and having a checkout device hosting
+this app, it should be easier to track them. Similarly, other items can be tracked using this app
+by the office admin.
 
 ## Technologies & libraries used:
 
